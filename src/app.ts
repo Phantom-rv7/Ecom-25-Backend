@@ -37,11 +37,15 @@ const app = express();
 
 // ✅ CORS Configuration — must come before routes
 app.use(cors({
-  origin: 'http://localhost:5173', // ✅ must match frontend origin exactly
+  origin: [
+    'http://localhost:5173', 
+    'https://ecommerce-frontend-1-gp1k.onrender.com'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 
 
 app.options('*', cors());
