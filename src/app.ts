@@ -11,13 +11,9 @@ import path from 'path';
 
 dotenv.config();
 
-// ✅ Load environment variables early
-// dotenv.config({ path: './.env' });
-
 // ✅ Constants
 const PORT = process.env.PORT || 4000;
 const mongoURI = process.env.MONGO_URI || '';
-// const stripeKey = process.env.STRIPE_KEY || '';
 
 // ✅ Connect to MongoDB
 connectDB(mongoURI);
@@ -29,27 +25,33 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-
 export const myCache = new NodeCache();
 
 // ✅ Initialize Express
 const app = express();
 
-// ✅ CORS Configuration — must come before routes
+// ✅ CORS Configuration — allow multiple origins
+const allowedOrigins = [
+  'http://localhost:5173',   // Vite dev
+  'http://localhost:4173',   // Vite preview
+  'https://ecommerce-frontend-1-gp1k.onrender.com' // deployed frontend
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173', 
-    'https://ecommerce-frontend-1-gp1k.onrender.com'
-  ],
+  origin: function (origin, callback) {
+    // allow requests with no origin (like curl, mobile apps)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-
-
 app.options('*', cors());
-
 
 // ✅ Middleware
 app.use(express.json());
@@ -68,14 +70,13 @@ app.get('/', (_req, res) => {
   res.send('API working with /api/v1');
 });
 
-//Uses
+// Uses
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoute);
 app.use('/api/v1/order', orderRoute);
 app.use('/api/v1/payment', paymentRoute);
 app.use('/api/v1/dashboard', dashboardRoute);
 app.use('/api/v1/favorite', favoriteRoute);
-
 
 // ✅ Static Files
 app.use('/uploads', express.static('upload'));
