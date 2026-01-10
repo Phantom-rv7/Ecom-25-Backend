@@ -34,8 +34,10 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',   // Vite dev
   'http://localhost:4173',   // Vite preview
-  'https://ecommerce-frontend-1-gp1k.onrender.com' // deployed frontend
+  'https://retrorevivalecom.vercel.app',            // Vercel frontend
+  'https://www.retrofahsion.online'                 // Hostinger custom domain
 ];
+
 
 app.use(cors({
   origin: function (origin, callback) {
