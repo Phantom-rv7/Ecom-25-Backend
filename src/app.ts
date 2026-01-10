@@ -34,9 +34,11 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',   // Vite dev
   'http://localhost:4173',   // Vite preview
-  'https://retrorevivalecom.vercel.app',            // Vercel frontend
-  'https://www.retrofahsion.online'                 // Hostinger custom domain
+  'https://retrorevivalecom.vercel.app',   // old Vercel frontend
+  'https://ecommerce-frontend-mauve-one.vercel.app', // ✅ new Vercel frontend
+  'https://www.retrofahsion.online'        // Hostinger custom domain
 ];
+
 
 
 app.use(cors({
